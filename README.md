@@ -33,7 +33,7 @@ A modern, responsive banking dashboard built with React, TypeScript, and Tailwin
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone (https://github.com/Gru2014/financial-dashboard.git)
    ```
 
 2. Install dependencies:
