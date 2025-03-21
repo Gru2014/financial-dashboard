@@ -23,7 +23,6 @@ export default function CreditCard({
     maximumFractionDigits: 0,
   }).format(balance);
 
-  // Format card number to match "3778 **** **** 1234" format
   const firstFour = cardNumber.slice(0, 4);
   const lastFour = cardNumber.slice(-4);
   const maskedCardNumber = `${firstFour} **** **** ${lastFour}`;
@@ -78,10 +77,9 @@ export default function CreditCard({
           </div>
         </div>
         <div className="bg-gradient-to-r from-[#ffffff]/20 to-[#ffffff]/0 relative rounded-b-[28px] p-4">
-          <p className="text-[22px] tracking-[0.2em] font-light">
+          <p className="text-[22px] tracking-[0.05em] font-light">
             {maskedCardNumber}
           </p>
-          {/* Mastercard Logo */}
           <div className="absolute bottom-5 right-7">
             <div className="flex">
               <div
@@ -92,7 +90,7 @@ export default function CreditCard({
               ></div>
               <div
                 className={clsx(
-                  "w-[30px] h-[30px] rounded-full -ml-[9px]",
+                  "w-[30px] h-[30px] rounded-full -ml-[15px]",
                   variant === "dark" ? "bg-white/60" : "bg-[#374151]/60"
                 )}
               ></div>
@@ -100,8 +98,6 @@ export default function CreditCard({
           </div>
         </div>
       </div>
-
-      {/* Card Logo */}
       <div className="absolute top-7 right-7">
         {variant === "dark" ? <WhiteCardIcon /> : <BlackCardIcon />}
       </div>

@@ -54,7 +54,7 @@ export function NotificationIcon({ className }: IconPropsNoColor) {
     <svg
       className={className}
       fill="none"
-      stroke="currentColor"
+      stroke="#396AFF"
       viewBox="0 0 24 24"
     >
       <path
@@ -588,7 +588,7 @@ export function PencilIcon({ className }: IconProps) {
     <svg
       className={className}
       fill="none"
-      stroke="currentColor"
+      stroke="white"
       viewBox="0 0 24 24"
     >
       <path

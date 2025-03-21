@@ -52,7 +52,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
 
             <button className="p-2 bg-gray-50 rounded-full relative hidden md:block">
               <NotificationIcon className="w-6 h-6 text-gray-600" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+              <span className="absolute top-2 right-2 w-2 h-2 border-2 border-[#396AFF] rounded-full"></span>
             </button>
 
             <div className="w-10 h-10 rounded-full overflow-hidden">

@@ -1,7 +1,7 @@
 export interface FormData {
   yourName: string;
   email: string;
-  dateOfBirth: string;
+  dateOfBirth: Date;
   permanentAddress: string;
   postalCode: string;
   userName: string;
@@ -19,7 +19,7 @@ export interface User {
   id: string;
   yourName: string;
   email: string;
-  dateOfBirth: string;
+  dateOfBirth: Date;
   permanentAddress: string;
   postalCode: string;
   userName: string;

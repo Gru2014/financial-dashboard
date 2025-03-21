@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import clsx from "clsx";
 import Header from "../components/Header";
 import Button from "../components/common/Button";
 import { useUser } from "../contexts/UserContext";
 import { FormData } from "../types/types";
-import DatePicker from "../components/common/DatePicker";
 import { PencilIcon } from "../components/icons";
+import { Input } from "../components/common/Input";
 
 interface SettingsProps {
   onMenuClick: () => void;
@@ -16,6 +16,8 @@ export default function Settings({ onMenuClick }: SettingsProps) {
   const [activeTab, setActiveTab] = useState("Edit Profile");
   const tabs = ["Edit Profile", "Preferences", "Security"];
   const { user, updateUser } = useUser();
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
     register,
@@ -26,7 +28,7 @@ export default function Settings({ onMenuClick }: SettingsProps) {
     defaultValues: {
       yourName: "",
       email: "",
-      dateOfBirth: "",
+      dateOfBirth: new Date(),
       permanentAddress: "",
       postalCode: "",
       userName: "",
@@ -58,51 +60,26 @@ export default function Settings({ onMenuClick }: SettingsProps) {
     updateUser(data);
   };
 
-  const renderInput = (
-    label: string,
-    name: keyof FormData,
-    type: string = "text"
-  ) => {
-    if (name === "dateOfBirth") {
-      return (
-        <DatePicker
-          label={label}
-          {...register(name, {
-            required: "Date of birth is required"
-          })}
-          error={errors[name]?.message}
-          touched={touchedFields[name]}
-        />
-      );
-    }
-
-    return (
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          {label}
-        </label>
-        <input
-          type={type}
-          {...register(name, {
-            required: `${label} is required`,
-            pattern: type === "email" ? {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: "Invalid email address"
-            } : undefined
-          })}
-          className={clsx(
-            "w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2",
-            errors[name] && touchedFields[name]
-              ? "border-red-500 focus:ring-red-200"
-              : "border-gray-200 focus:ring-black/5"
-          )}
-        />
-        {errors[name] && touchedFields[name] && (
-          <p className="mt-1 text-sm text-red-500">{errors[name]?.message}</p>
-        )}
-      </div>
-    );
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click();
   };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+      // Here you would typically upload the file to your server and update the user's avatar URL
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
 
   return (
     <div>
@@ -132,47 +109,55 @@ export default function Settings({ onMenuClick }: SettingsProps) {
               <div className="flex md:items-start justify-center gap-4 mb-8">
                 <div className="relative">
                   <img
-                    src={user?.avatar}
+                    src={previewUrl || user?.avatar}
                     alt="Profile"
-                    className="rounded-full object-cover"
+                    className="max-w-32 max-h-32 rounded-full object-cover"
+                  />
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleFileChange}
                   />
                   <button
                     type="button"
-                    className="absolute bottom-0 right-0 bg-white rounded-full p-1.5 shadow-md border border-gray-200"
+                    onClick={handleAvatarClick}
+                    className="absolute bottom-0 right-0 bg-[#232323] rounded-full p-1.5 shadow-md border border-gray-200 hover:bg-[#333333] transition-colors"
                   >
-                    <PencilIcon className="w-4 h-4" color="#B1B1B1" />
+                    <PencilIcon className="w-4 h-4 text-white" />
                   </button>
                 </div>
               </div>
 
               <div className="w-full">
                 <div className="md:hidden space-y-4">
-                  {renderInput("Your Name", "yourName")}
-                  {renderInput("User Name", "userName")}
-                  {renderInput("Email", "email", "email")}
-                  {renderInput("Password", "password", "password")}
-                  {renderInput("Date of Birth", "dateOfBirth")}
-                  {renderInput("Present Address", "presentAddress")}
-                  {renderInput("Permanent Address", "permanentAddress")}
-                  {renderInput("City", "city")}
-                  {renderInput("Country", "country")}
-                  {renderInput("Postal Code", "postalCode")}
+                  <Input label="Your Name" type="text" name="yourName" register={register} errors={errors} touchedFields={touchedFields} />
+                  <Input label="User Name" type="text" name="userName" register={register} errors={errors} touchedFields={touchedFields} />
+                  <Input label="Email" type="email" name="email" register={register} errors={errors} touchedFields={touchedFields} />
+                  <Input label="Date of Birth" type="date" name="dateOfBirth" register={register} errors={errors} touchedFields={touchedFields} />
+                  <Input label="Password" type="password" name="password" register={register} errors={errors} touchedFields={touchedFields} />
+                  <Input label="Present Address" type="text" name="presentAddress" register={register} errors={errors} touchedFields={touchedFields} />
+                  <Input label="Permanent Address" type="text" name="permanentAddress" register={register} errors={errors} touchedFields={touchedFields} />
+                  <Input label="City" type="text" name="city" register={register} errors={errors} touchedFields={touchedFields} />
+                  <Input label="Country" type="text" name="country" register={register} errors={errors} touchedFields={touchedFields} />
+                  <Input label="Postal Code" type="text" name="postalCode" register={register} errors={errors} touchedFields={touchedFields} />
                 </div>
                 <div className="hidden md:grid md:grid-cols-2 gap-6">
                   <div className="space-y-4 w-full">
-                    {renderInput("Your Name", "yourName")}
-                    {renderInput("Email", "email", "email")}
-                    {renderInput("Date of Birth", "dateOfBirth")}
-                    {renderInput("Permanent Address", "permanentAddress")}
-                    {renderInput("Postal Code", "postalCode")}
+                    <Input label="Your Name" type="text" name="yourName" register={register} errors={errors} touchedFields={touchedFields} />
+                    <Input label="Email" type="email" name="email" register={register} errors={errors} touchedFields={touchedFields} />
+                    <Input label="Date of Birth" type="date" name="dateOfBirth" register={register} errors={errors} touchedFields={touchedFields} />
+                    <Input label="Permanent Address" type="text" name="permanentAddress" register={register} errors={errors} touchedFields={touchedFields} />
+                    <Input label="Postal Code" type="text" name="postalCode" register={register} errors={errors} touchedFields={touchedFields} />
                   </div>
 
                   <div className="space-y-4">
-                    {renderInput("User Name", "userName")}
-                    {renderInput("Password", "password", "password")}
-                    {renderInput("Present Address", "presentAddress")}
-                    {renderInput("City", "city")}
-                    {renderInput("Country", "country")}
+                    <Input label="User Name" type="text" name="userName" register={register} errors={errors} touchedFields={touchedFields} />
+                    <Input label="Password" type="password" name="password" register={register} errors={errors} touchedFields={touchedFields} />
+                    <Input label="Present Address" type="text" name="presentAddress" register={register} errors={errors} touchedFields={touchedFields} />
+                    <Input label="City" type="text" name="city" register={register} errors={errors} touchedFields={touchedFields} />
+                    <Input label="Country" type="text" name="country" register={register} errors={errors} touchedFields={touchedFields} />
                   </div>
                 </div>
 

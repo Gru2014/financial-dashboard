@@ -68,7 +68,7 @@ export default function WeeklyActivity() {
                   />
                   <Bar
                     dataKey="deposit"
-                    fill="#3B82F6"
+                    fill="#396AFF"
                     radius={[50, 50, 50, 50]}
                     maxBarSize={16}
                   />

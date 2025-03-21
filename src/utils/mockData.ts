@@ -13,7 +13,7 @@ export const mockUser: User = {
   id: "1",
   yourName: "Charlene Reed",
   email: "charlenereed@gmail.com",
-  dateOfBirth: "25 January 1990",
+  dateOfBirth: new Date("1990-01-25"),
   permanentAddress: "San Jose, California, USA",
   postalCode: "45962",
   userName: "Charlene Reed",
@@ -98,10 +98,10 @@ export const mockWeeklyActivity: WeeklyActivity[] = [
 ];
 
 export const mockExpenseStats: ExpenseStats[] = [
-  { id: "1", userId: "1", name: "Entertainment", value: 30, color: "#3B82F6" },
-  { id: "2", userId: "1", name: "Bill Expense", value: 15, color: "#F97316" },
-  { id: "3", userId: "1", name: "Others", value: 35, color: "#1F2937" },
-  { id: "4", userId: "1", name: "Investment", value: 20, color: "#4F46E5" },
+    { id: "2", userId: "1", name: "Bill Expense", value: 15, color: "#F97316" },
+    { id: "3", userId: "1", name: "Others", value: 35, color: "#1F2937" },
+    { id: "4", userId: "1", name: "Investment", value: 20, color: "#4F46E5" },
+    { id: "1", userId: "1", name: "Entertainment", value: 30, color: "#3B82F6" },
 ];
 
 export const mockQuickTransfer: QuickTransfer[] = [

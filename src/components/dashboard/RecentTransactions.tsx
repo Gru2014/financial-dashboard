@@ -26,7 +26,7 @@ export default function RecentTransactions() {
                     <div
                       className={`w-10 h-10 rounded-full ${transaction.color} flex items-center justify-center`}
                     >
-                      <Icon className={`w-5 h-5 ${transaction.iconColor}`} />
+                      <Icon className={`w-10 h-10 ${transaction.iconColor}`} />
                     </div>
                     <div>
                       <p className="font-medium text-gray-900">
@@ -39,7 +39,7 @@ export default function RecentTransactions() {
                   </div>
                   <div
                     className={` ${
-                      transaction.amount > 0 ? "text-green-500" : "text-red-500"
+                      transaction.amount > 0 ? "text-green-500" : "text-[#FF4B4A]"
                     }`}
                   >
                     {transaction.amount > 0 ? "+" : "-"}
